@@ -21,4 +21,12 @@ public class RoleServiceImpl implements RoleService {
     public RoleEntity getRoleByName(String name) throws RoleNotFoundException {
         return roleRepository.findByName(name).orElseThrow(RoleNotFoundException::new);
     }
+
+    @Override
+    public RoleEntity createNewRole(String name) {
+        if (!roleRepository.existsByName(name.toUpperCase())) {
+            return roleRepository.save(RoleEntity.builder().name(name.toUpperCase()).build());
+        }
+        return null;
+    }
 }
