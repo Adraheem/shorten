@@ -1,5 +1,6 @@
 package com.shortenServer.security;
 
+import com.shortenServer.data.models.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,9 +13,18 @@ import java.util.Date;
 @Component
 public class JwtGenerator {
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(UserEntity user){
+        String username = user.getUsername();
+        return generateToken(username);
+    }
+
+    public String generateToken(Authentication authentication){
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) authentication.getPrincipal();
         String username = authenticatedUser.getUsername();
+        return generateToken(username);
+    }
+
+    public String generateToken(String username) {
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION_TIME);
 

@@ -2,10 +2,7 @@ package com.shortenServer.data.models;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,20 +20,12 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Nonnull
-    private String username;
+    private String username, fullName, password;
 
-    @Nonnull
-    private String fullName;
+    private final LocalDateTime dateCreated = LocalDateTime.now();
 
-    @Nonnull
-    private String password;
+    private final LocalDateTime dateUpdated = LocalDateTime.now();
 
-    private LocalDateTime dateCreated = LocalDateTime.now();
-
-    private LocalDateTime dateUpdated = LocalDateTime.now();
-
-    @Nonnull
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<RoleEntity> roles = new ArrayList<>();
 

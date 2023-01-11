@@ -51,18 +51,16 @@ public class AuthServiceImpl implements AuthService {
         RoleEntity userRole = roleService.getRoleByName("USER");
 
         UserEntity savedUser = userRepository.save(
-                                    UserEntity.builder()
-                                            .fullName(createUserRequestDTO.getFullName())
-                                            .username(createUserRequestDTO.getUsername())
-                                            .password(passwordEncoder.encode(createUserRequestDTO.getPassword()))
-                                            .roles(Collections.singletonList(userRole))
-                                            .build()
-                            );
-        LoginResponseDTO login = this.login(LoginRequestDTO.builder()
-                        .username(savedUser.getUsername())
-                        .password(savedUser.getPassword())
-                        .build());
-        return CreateUserResponseDTO.builder().token(login.getToken()).build();
+                UserEntity.builder()
+                        .fullName(createUserRequestDTO.getFullName())
+                        .username(createUserRequestDTO.getUsername())
+                        .password(passwordEncoder.encode(createUserRequestDTO.getPassword()))
+                        .roles(Collections.singletonList(userRole))
+                        .build()
+        );
+
+        String token = tokenGenerator.generateToken(savedUser);
+        return CreateUserResponseDTO.builder().token(token).build();
     }
 
     @Override
@@ -73,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
             );
             String token = tokenGenerator.generateToken(authentication);
             return LoginResponseDTO.builder().token(token).build();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new InvalidLoginDetailsException();
         }
     }
