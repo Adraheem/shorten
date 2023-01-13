@@ -3,7 +3,7 @@ package com.shortenServer.exceptions;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-public class ApiRequestException extends Exception {
+public class ApiRequestException extends RuntimeException {
 
     @Getter
     private HttpStatus status = HttpStatus.BAD_REQUEST;

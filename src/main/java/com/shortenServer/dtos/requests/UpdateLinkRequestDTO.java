@@ -1,11 +1,9 @@
-package com.shortenServer.dtos.responses;
+package com.shortenServer.dtos.requests;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
-public class LinkDTO {
+public class UpdateLinkRequestDTO {
 
     private Long id;
 

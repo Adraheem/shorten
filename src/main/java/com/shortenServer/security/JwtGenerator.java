@@ -13,12 +13,12 @@ import java.util.Date;
 @Component
 public class JwtGenerator {
 
-    public String generateToken(UserEntity user){
+    public String generateToken(UserEntity user) {
         String username = user.getUsername();
         return generateToken(username);
     }
 
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) {
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) authentication.getPrincipal();
         String username = authenticatedUser.getUsername();
         return generateToken(username);
@@ -32,26 +32,28 @@ public class JwtGenerator {
                 .setSubject(username)
                 .setIssuedAt(currentDate)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET_KEY)
                 .compact();
     }
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SecurityConstants.JWT_SECRET_KEY)
-                .parseClaimsJwt(token).getBody();
+                .parseClaimsJws(token).getBody();
 
         return claims.getSubject();
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
+        System.out.println(token);
         try {
             Jwts.parser()
                     .setSigningKey(SecurityConstants.JWT_SECRET_KEY)
-                    .parseClaimsJwt(token);
+                    .parseClaimsJws(token);
 
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new AuthenticationCredentialsNotFoundException("Invalid token");
         }
     }
