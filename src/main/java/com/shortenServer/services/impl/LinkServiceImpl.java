@@ -5,6 +5,7 @@ import com.shortenServer.data.models.UserEntity;
 import com.shortenServer.data.repositories.LinkRepository;
 import com.shortenServer.dtos.requests.CheckAvailabilityRequestDTO;
 import com.shortenServer.dtos.requests.CreateLinkRequestDTO;
+import com.shortenServer.dtos.requests.PaginationParamsDTO;
 import com.shortenServer.dtos.requests.UpdateLinkRequestDTO;
 import com.shortenServer.dtos.responses.CheckSlugAvailabilityResponseDTO;
 import com.shortenServer.dtos.responses.LinkDTO;
@@ -14,9 +15,12 @@ import com.shortenServer.exceptions.specifics.SlugNotAvailableException;
 import com.shortenServer.services.LinkService;
 import com.shortenServer.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.stream.Collectors;
 
 @Service
 public class LinkServiceImpl implements LinkService {
@@ -104,8 +108,17 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public Paginated<LinkDTO> getAllLinks() {
-        return null;
+    public Paginated<LinkDTO> getAllLinks(PaginationParamsDTO params) {
+        UserEntity user = userService.getAuthenticatedUser();
+        Page<LinkEntity> allLinks = linkRepository.findAllByUser(user, PageRequest.of(params.getPage(), params.getSize()));
+
+        Paginated<LinkDTO> paginatedLinks = new Paginated<>(allLinks);
+        paginatedLinks.setData(
+                allLinks.get()
+                        .map(LinkServiceImpl::parseToDto)
+                        .collect(Collectors.toList())
+        );
+        return paginatedLinks;
     }
 
     @Override

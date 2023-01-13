@@ -2,6 +2,7 @@ package com.shortenServer.services;
 
 import com.shortenServer.dtos.requests.CheckAvailabilityRequestDTO;
 import com.shortenServer.dtos.requests.CreateLinkRequestDTO;
+import com.shortenServer.dtos.requests.PaginationParamsDTO;
 import com.shortenServer.dtos.requests.UpdateLinkRequestDTO;
 import com.shortenServer.dtos.responses.CheckSlugAvailabilityResponseDTO;
 import com.shortenServer.dtos.responses.LinkDTO;
@@ -17,7 +18,7 @@ public interface LinkService {
 
     void deleteLink(Long id);
 
-    Paginated<LinkDTO> getAllLinks();
+    Paginated<LinkDTO> getAllLinks(PaginationParamsDTO params);
 
     LinkDTO getLink(Long id);
 
