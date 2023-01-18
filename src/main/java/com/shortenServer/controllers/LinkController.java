@@ -5,6 +5,7 @@ import com.shortenServer.dtos.requests.PaginationParamsDTO;
 import com.shortenServer.dtos.responses.LinkDTO;
 import com.shortenServer.dtos.responses.Paginated;
 import com.shortenServer.services.LinkService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class LinkController {
     }
 
     @PostMapping("")
-    public ResponseEntity<LinkDTO> createNewLink(@RequestBody CreateLinkRequestDTO request) {
+    public ResponseEntity<LinkDTO> createNewLink(@RequestBody @Valid CreateLinkRequestDTO request) {
         return new ResponseEntity<>(linkService.createLink(request), HttpStatus.OK);
     }
 
