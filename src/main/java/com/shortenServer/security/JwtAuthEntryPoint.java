@@ -17,16 +17,16 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-//        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, authException.getMessage());
-        response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        response.getWriter().write(
-                ApiRequestExceptionResponse
-                        .builder()
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .message("Internal server error")
-                        .build()
-                        .toString()
-        );
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+//        response.setContentType("application/json");
+//        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//        response.getWriter().write(
+//                ApiRequestExceptionResponse
+//                        .builder()
+//                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                        .message("Internal server error")
+//                        .build()
+//                        .toString()
+//        );
     }
 }

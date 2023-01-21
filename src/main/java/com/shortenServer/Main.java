@@ -1,12 +1,37 @@
 package com.shortenServer;
 
 import com.shortenServer.services.RoleService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@OpenAPIDefinition(
+        info = @Info(
+                title = "URL Shortener",
+                version = "v1",
+                description = "This app provides REST APIs for URL shortener",
+                contact = @Contact(
+                        name = "Raheem Adebayo",
+                        email = "adraheemzy@gmail.com"
+                )
+        ),
+        servers = {
+                @Server(
+                        url = "http://localhost:8080",
+                        description = "DEV Server"
+                ),
+                @Server(
+                        url = "http://localhost:8080",
+                        description = "PROD Server"
+                )
+        }
+)
 public class Main {
 
     private RoleService roleService;
@@ -21,10 +46,10 @@ public class Main {
     }
 
     @Bean
-    public void populateDb(){
+    public void populateDb() {
         String[] defaultRoles = {"USER", "ADMIN"};
 
-        for (String role : defaultRoles ){
+        for (String role : defaultRoles) {
             roleService.createNewRole(role);
         }
     }

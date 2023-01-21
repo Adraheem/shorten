@@ -8,6 +8,7 @@ import com.shortenServer.exceptions.specifics.InvalidLoginDetailsException;
 import com.shortenServer.exceptions.specifics.RoleNotFoundException;
 import com.shortenServer.exceptions.specifics.UsernameAlreadyExistsException;
 import com.shortenServer.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +29,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<CreateUserResponseDTO> signup(@RequestBody CreateUserRequestDTO request)
+    public ResponseEntity<CreateUserResponseDTO> signup(@Valid @RequestBody CreateUserRequestDTO request)
             throws UsernameAlreadyExistsException, InvalidLoginDetailsException, RoleNotFoundException {
         return new ResponseEntity<>(authService.createUser(request), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request)
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO request)
             throws InvalidLoginDetailsException {
         return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
