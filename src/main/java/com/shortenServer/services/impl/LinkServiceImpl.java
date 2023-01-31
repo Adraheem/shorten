@@ -10,6 +10,7 @@ import com.shortenServer.dtos.requests.UpdateLinkRequestDTO;
 import com.shortenServer.dtos.responses.CheckSlugAvailabilityResponseDTO;
 import com.shortenServer.dtos.responses.LinkDTO;
 import com.shortenServer.dtos.responses.Paginated;
+import com.shortenServer.dtos.responses.SingleDataResponseDTO;
 import com.shortenServer.exceptions.specifics.LinkNotFoundException;
 import com.shortenServer.exceptions.specifics.SlugNotAvailableException;
 import com.shortenServer.services.LinkService;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,13 +100,27 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public CheckSlugAvailabilityResponseDTO checkAvailability(CheckAvailabilityRequestDTO checkAvailabilityRequestDTO) {
-        return null;
+    public SingleDataResponseDTO<Boolean> checkAvailability(CheckAvailabilityRequestDTO checkAvailabilityRequestDTO) {
+        Optional<LinkEntity> link = linkRepository.findBySlug(checkAvailabilityRequestDTO.getSlug());
+
+        SingleDataResponseDTO<Boolean> res = new SingleDataResponseDTO<>();
+
+        if (linkRepository.existsBySlug(checkAvailabilityRequestDTO.getSlug())
+                && link.isPresent() && !link.get().getId().equals(checkAvailabilityRequestDTO.getId())){
+            res.setData(false);
+        } else {
+            res.setData(true);
+        }
+
+        return res;
     }
 
     @Override
     public void deleteLink(Long id) {
+        UserEntity user = userService.getAuthenticatedUser();
+        LinkEntity savedLink = linkRepository.findByUserAndId(user, id).orElseThrow(LinkNotFoundException::new);
 
+        linkRepository.delete(savedLink);
     }
 
     @Override
@@ -123,7 +139,23 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public LinkDTO getLink(Long id) {
-        return null;
+        UserEntity user = userService.getAuthenticatedUser();
+        Optional<LinkEntity> linkEntity = linkRepository.findByUserAndId(user, id);
+        if (linkEntity.isPresent()) {
+            return parseToDto(linkEntity.get());
+        } else {
+            throw new LinkNotFoundException();
+        }
+    }
+
+    @Override
+    public SingleDataResponseDTO<String> getOriginalUrl(String slug) {
+        LinkEntity link = linkRepository.findBySlug(slug).orElseThrow(LinkNotFoundException::new);
+
+        SingleDataResponseDTO<String> res = new SingleDataResponseDTO<>();
+        res.setData(link.getUrl());
+
+        return res;
     }
 
 }

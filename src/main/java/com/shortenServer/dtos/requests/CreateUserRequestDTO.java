@@ -1,5 +1,6 @@
 package com.shortenServer.dtos.requests;
 
+import com.shortenServer.utils.RegexPattern;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +15,7 @@ public class CreateUserRequestDTO {
 
     private String fullName;
 
-    @Pattern(regexp = "^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,64})$",
+    @Pattern(regexp = RegexPattern.PASSWORD,
             message = "Password must be between 8 - 64 characters and must contain at least 1 uppercase, 1 lowercase," +
                     " 1 number and 1 special " +
                     "character")

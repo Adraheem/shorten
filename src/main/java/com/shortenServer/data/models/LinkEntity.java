@@ -33,7 +33,7 @@ public class LinkEntity {
 
     private final LocalDateTime dateModified = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
     private UserEntity user;
 
 }

@@ -13,7 +13,8 @@ To clone project
 ```
 git clone https://github.com/Adraheem/shorten.git
 ```
-To view documentation:\
+### Documentation
+[Postman Documentation](https://documenter.getpostman.com/view/15097759/2s935iumUs)\
 [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ### Developer & Engineer

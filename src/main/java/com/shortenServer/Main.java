@@ -1,6 +1,7 @@
 package com.shortenServer;
 
 import com.shortenServer.services.RoleService;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -32,7 +33,10 @@ import org.springframework.context.annotation.Bean;
                         url = "http://localhost:8080",
                         description = "PROD Server"
                 )
-        }
+        },
+        externalDocs = @ExternalDocumentation(
+                url = "https://documenter.getpostman.com/view/15097759/2s935iumUs",
+                description = "Postman Documentation")
 )
 public class Main {
 

@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 public class LinkNotFoundException extends ApiRequestException {
 
     public LinkNotFoundException() {
-        this("Link ot found");
+        this("Link not found");
     }
 
     public LinkNotFoundException(String message) {

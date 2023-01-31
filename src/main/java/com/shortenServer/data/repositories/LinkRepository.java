@@ -23,4 +23,6 @@ public interface LinkRepository extends
 
     Optional<LinkEntity> findByUserAndId(UserEntity user, Long id);
 
+    Optional<LinkEntity> findBySlug(String slug);
+
 }
